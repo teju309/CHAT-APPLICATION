@@ -26,8 +26,8 @@ io.on('connection', (socket) => {
        }
        //console.log(user)
        socket.join(user.room)
-       socket.broadcast.to(user.room).emit('receiveMessage', generateMessage(user.username+' has joined!') , null)
-       socket.emit('receiveMessage',generateMessage('Welcome! '+user.username), null)
+      //  socket.broadcast.to(user.room).emit('receiveMessage', generateMessage(user.username+' has joined!') , null)
+      //  socket.emit('receiveMessage',generateMessage('Welcome! '+user.username), null)
        io.to(user.room).emit('roomData', {
          room: user.room,
          users: getUsersInRoom(user.room)

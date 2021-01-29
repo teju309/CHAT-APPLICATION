@@ -35,14 +35,19 @@
                         <div class="card"  style="height: 39rem; margin-top: 40px;">
                             <div class="scroll exp pm" id="data" style="padding: 10px;" >
                                 <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div id="messages-left"></div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div id="messages-right"></div>    
-                                        </div>
-                                    </div>        
+                                    <div class="chatlogs">
+                                        <div class="message_area"></div>
+                                        <!-- <div class="chat-friend">
+                                          <div id="messages-left"></div>
+                                        </div> 
+                                              
+                                        <div class="chat-self">
+                                              <div id="messages-right">
+                                               </div>
+                                          </div> -->
+                                     </div>
+                                    </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -71,35 +76,56 @@
                 </div>
             </div>
         </div> 
-
-
-        <script id="message-template-left" type="text/html">
-        <div style="line-height: 0.8;color:{{clr}}">
+        <script id="message_template" type="text/html">
+         <div>
             <p>
-            <strong style="font-size:20px;">{{username}}</strong>
-                &nbsp;&nbsp;
-                {{createdAt}}
-            </p>
-            <p style="font-size:25px">
-                {{message}}
-            </p>
-        </div>
-        <!-- <br> -->
-        </script>
-        
-        <script id="message-template-right" type="text/html">
-            <div style="line-height: 0.8;color:{{clr}}; text-align:right;">
-                <p>
-                <strong style="font-size:20px;">{{username}}</strong>
+                <strong style="font-size:20px;"></strong>
+                    {{username}}
                     &nbsp;&nbsp;
                     {{createdAt}}
                 </p>
-                <p style="font-size:25px">
+                <p >
+                style="font-size:25px"> 
                     {{message}}
                 </p>
             </div>
-            <!-- <br> -->
-            </script>
+
+        </script>
+        <!-- <script id="message-template" type="text/html">
+            <div>
+                 style="line-height: 0.8;color:{{clr}}; text-align:right;">
+                <p>
+                <strong style="font-size:20px;"></strong>
+                    {{username}}
+                    &nbsp;&nbsp;
+                    {{createdAt}}
+                </p>
+                <p >
+                style="font-size:25px"> 
+                    {{message}}
+                </p>
+            </div>
+            <br>
+            </script> -->
+
+        <!-- <script id="message-template-left" type="text/html">
+        <div >
+            style="line-height: 0.8;color:{{clr}}">
+            <p>
+            <strong style="font-size:20px;"></strong>
+            {{username}}
+                &nbsp;&nbsp;
+                {{createdAt}}
+            </p>
+            <p>
+                 style="font-size:25px">
+                {{message}}
+            </p>
+        </div> 
+         <br> 
+        </script> -->
+        
+       
         
         <script id="location-template-right" type="text/html">
         <div style="line-height: 0.8;color:{{clr}}; text-align:right;">
@@ -157,7 +183,8 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
         <!-- socketio -->
-        <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/chat.js"></script>
+            <script src="/socket.io/socket.io.js"></script>
+            <script src="/js/chat.js" ></script>
+       
     </body>
 </html>

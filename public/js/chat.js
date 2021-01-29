@@ -1,3 +1,4 @@
+
 const socket = io()
 
 //elements
@@ -5,14 +6,14 @@ const $messageForm = document.querySelector('#message-form')
 const $messageFormInput = $messageForm.querySelector('input')
 const $messageFormButton = $messageForm.querySelector('button')
 const $sendLocation = document.querySelector('#send-location')
-const $messagesLeft = document.querySelector('#messages-left')
-const $messagesRight = document.querySelector('#messages-right')
+// const $messagesLeft = document.querySelector('#messages-left')
+// const $messagesRight = document.querySelector('#messages-right')
 const $sidebar = document.querySelector('#sidebar')
 const $sidebarheader = document.querySelector('#sidebarheader')
-
+const $messagearea=document.querySelector('#message_area')
 //templates
-const messageTemplateLeft = document.querySelector('#message-template-left').innerHTML
-const messageTemplateRight = document.querySelector('#message-template-right').innerHTML
+  const messageTemplate = document.querySelector('#message_template').innerHTML
+// const messageTemplateRight = document.querySelector('#message-template-right').innerHTML
 //const locationTemplate = document.querySelector("#location-template").innerHTML
 const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML
 const sidebarheaderTemplate = document.querySelector('#sidebarheader-template').innerHTML
@@ -32,51 +33,87 @@ socket.emit('join', {username:parameters.get('username'), room:parameters.get('r
     }
 })
  
-socket.on('receiveMessage', (message,id) => {
-   // console.log(socket.id)
-     if(id === socket.id)
-     { 
-        const htmlL = Mustache.render(messageTemplateLeft,{
-        clr : 'transparent',
-        username : message.username,
-        message : message.text,
-        createdAt : moment(message.createdAt).format('h:mm a')
-       })
-    
-        const htmlR = Mustache.render(messageTemplateRight,{
-        clr : '#874e4c',
-        username : message.username,
-        message : message.text,
-        createdAt : moment(message.createdAt).format('h:mm a')
-      })
+$messageForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    var objDiv = document.getElementById("data");
+    objDiv.scrollTop = objDiv.scrollHeight;
+    $messageFormButton.setAttribute('disabled', 'disabled')
 
-       $messagesRight.insertAdjacentHTML('beforeend',htmlR)
-       $messagesLeft.insertAdjacentHTML('beforeend',htmlL)
-     }
-
-     else
-     {  
-        const htmlL = Mustache.render(messageTemplateLeft,{
-        clr : '#874e4c',
-        username : message.username,
-        message : message.text,
-        createdAt : moment(message.createdAt).format('h:mm a')
-       })
-    
-        const htmlR = Mustache.render(messageTemplateRight,{
-        clr : 'transparent',
-        username : message.username,
-        message : message.text,
-        createdAt : moment(message.createdAt).format('h:mm a')
-      })
-
-        $messagesRight.insertAdjacentHTML('beforeend',htmlR)
-        $messagesLeft.insertAdjacentHTML('beforeend',htmlL)
-
-     }
-        var objDiv = document.getElementById("data");
-        objDiv.scrollTop = objDiv.scrollHeight;
+    const message = e.target.elements.message.value
+    // console.log(message)
+    sendmessage(message)
+   
 })
+function sendmessage(message)
+{
+    // console.log(msg)
+     appendmessage(message,'outgoing')
+     socket.emit('sendMessage',message, (error) => {
+        $messageFormButton.removeAttribute('disabled')
+        $messageFormInput.value=''
+        $messageFormInput.focus()
+        if(error)
+        {
+            return alert(error)
+        }
+        console.log('message delivered!')
+    })
+}
+function appendmessage(message,type)
+{
+    
+}
+
+
+socket.on('receiveMessage', (message,id) => {
+    if(socket.id!==id)
+    {
+    appendmessage(message,'incomming')
+    }   
+   // console.log(socket.id)
+    //  if(id === socket.id)
+    //  { 
+    //     const htmlL = Mustache.render(messageTemplateLeft,{
+    //     clr : 'transparent',
+    //     username : message.username,
+    //     message : message.text,
+    //     createdAt : moment(message.createdAt).format('h:mm a')
+    //    })
+    
+    //     const htmlR = Mustache.render(messageTemplateRight,{
+    //     clr : '#874e4c',
+    //     username : message.username,
+    //     message : message.text,
+    //     createdAt : moment(message.createdAt).format('h:mm a')
+    //   })
+
+    //    $messagesRight.insertAdjacentHTML('beforeend',htmlR)
+    //    $messagesLeft.insertAdjacentHTML('beforeend',htmlL)
+//      }
+
+//      else
+//      {  
+//         const htmlL = Mustache.render(messageTemplateLeft,{
+//         clr : '#874e4c',
+//         username : message.username,
+//         message : message.text,
+//         createdAt : moment(message.createdAt).format('h:mm a')
+//        })
+    
+//         const htmlR = Mustache.render(messageTemplateRight,{
+//         clr : 'transparent',
+//         username : message.username,
+//         message : message.text,
+//         createdAt : moment(message.createdAt).format('h:mm a')
+//       })
+
+//        $messagesRight.insertAdjacentHTML('beforeend',htmlR)
+//         $messagesLeft.insertAdjacentHTML('beforeend',htmlL)
+
+//      }
+         var objDiv = document.getElementById("data");
+         objDiv.scrollTop = objDiv.scrollHeight;
+ })
 
 socket.on('receiveLocation', (message,id) => {
     if(id === socket.id)
@@ -140,24 +177,9 @@ socket.on('roomData' , (data) => {
 })
 
 
-$messageForm.addEventListener('submit', (e) => {
-    e.preventDefault()
-    var objDiv = document.getElementById("data");
-    objDiv.scrollTop = objDiv.scrollHeight;
-    $messageFormButton.setAttribute('disabled', 'disabled')
 
-    const message = e.target.elements.message.value
-    socket.emit('sendMessage',message, (error) => {
-        $messageFormButton.removeAttribute('disabled')
-        $messageFormInput.value=''
-        $messageFormInput.focus()
-        if(error)
-        {
-            return alert(error)
-        }
-        console.log('message delivered!')
-    })
-})
+
+
 
 $sendLocation.addEventListener('click', () => {
 
@@ -180,4 +202,3 @@ $sendLocation.addEventListener('click', () => {
         })
     })
 })
-
